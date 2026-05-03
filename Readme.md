@@ -1,5 +1,6 @@
 # Leetcode Tutor
 
+
 A two-pane reading room for studying LeetCode problems. The left pane shows
 the canonical problem statement; the right pane is a tutor with three modes
 (structured walkthrough, Socratic questions, freeform chat) backed by an
@@ -11,6 +12,13 @@ The app is split into two services: a Python FastAPI backend (`leetapi/`)
 that owns the catalog, problem statements, LLM cache, and provider
 adapters; and a Next.js frontend (`web/`) that talks to the backend over
 HTTP and renders the UI.
+
+<img width="2520" height="1294" alt="Screenshot 2026-05-02 at 7 09 57 p m" src="https://github.com/user-attachments/assets/e1efb62a-d6ae-4941-beee-db5aa838ec43" />
+
+<img width="2500" height="1155" alt="Screenshot 2026-05-02 at 7 11 03 p m" src="https://github.com/user-attachments/assets/06e3b6ee-07b5-4994-8147-190cd05df123" />
+
+<img width="2527" height="1177" alt="Screenshot 2026-05-02 at 7 10 53 p m" src="https://github.com/user-attachments/assets/d29d73b3-2d6e-4c92-9cf0-3e5d4cbd817d" />
+
 
 ## Requirements
 
