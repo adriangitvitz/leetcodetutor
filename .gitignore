@@ -1,0 +1,36 @@
+# OS / editor noise
+.DS_Store
+.idea/
+*.iml
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Local environment / secrets
+.env
+.env.*
+!.env.local.example
+
+# Generated data — produced by `make ingest` from the upstream `problems/`
+# CSVs. Includes data/app.db, the SQLite cache, and any per-problem markdown.
+data/
+
+# Upstream problem dataset — cloned separately from
+# https://github.com/liquidslr/interview-company-wise-problems
+problems/
