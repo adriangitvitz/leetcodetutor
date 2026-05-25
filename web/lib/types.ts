@@ -25,7 +25,7 @@ export type Statement = {
 };
 
 export type Persona = {
-  key: "scholar" | "coach" | "sage" | "hacker";
+  key: "scholar" | "coach" | "sage" | "hacker" | "coach_es";
   name: string;
   desc: string;
   openerTeach: string;

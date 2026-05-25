@@ -33,4 +33,12 @@ export const PERSONAS: Record<Persona["key"], Persona> = {
     openerSoc: "What's the smallest failing case? Start there.",
     openerChat: "Ask. I'll be brief.",
   },
+  coach_es: {
+    key: "coach_es",
+    name: "El Coach",
+    desc: "Motivador, enérgico, en español",
+    openerTeach: "¡Vamos! Buen problema - lo desglosamos juntos. Tú puedes con esto.",
+    openerSoc: "Me gusta, estamos calentando. Dime qué ves - la primera intuición cuenta.",
+    openerChat: "¡Lánzame tu pregunta! Cualquiera, no hay malas preguntas.",
+  },
 };

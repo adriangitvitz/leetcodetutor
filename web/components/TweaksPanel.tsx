@@ -14,6 +14,7 @@ const PERSONA_ORDER: { k: Persona["key"]; glyph: string }[] = [
   { k: "coach", glyph: "C" },
   { k: "sage", glyph: "Z" },
   { k: "hacker", glyph: "H" },
+  { k: "coach_es", glyph: "E" },
 ];
 
 const PROVIDER_ORDER: { k: Provider; label: string }[] = [

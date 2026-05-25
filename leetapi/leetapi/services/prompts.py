@@ -12,17 +12,26 @@ class ProblemContext:
     statement: str
 
 def _persona_system_preamble(p: Persona) -> str:
-    return "\n".join([
+    lines = [
         f"You are {p.name}, a {p.desc.lower()} algorithms tutor.",
         "",
         "Voice rules:",
         "- Stay in character throughout. Your voice should feel distinct from a generic AI.",
         '- No filler openers ("Great question!", "Let me think...") — start with substance.',
         "- Plain language. No emoji. No exclamation salads.",
+    ]
+    if p.language.lower() != "english":
+        lines += [
+            f"- Write ALL natural-language output in {p.language}. This includes every string field"
+            " (plain, aha, strategy, complexity descriptions, questions, hints). Keep code, identifiers,"
+            " Big-O notation, and JSON keys unchanged.",
+        ]
+    lines += [
         "",
         "Audience: a learner who has just read the problem statement but has not attempted to solve it.",
         "Goal: help them understand, not impress them.",
-    ])
+    ]
+    return "\n".join(lines)
 
 _TEACHER_SCHEMA = """{
   "plain":      string,

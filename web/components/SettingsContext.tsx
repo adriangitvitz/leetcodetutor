@@ -41,7 +41,7 @@ const DEFAULTS: Settings = {
 };
 
 const PROVIDERS_SET: ReadonlySet<Provider> = new Set(["openrouter", "lmstudio", "mlx"]);
-const PERSONAS_SET: ReadonlySet<Persona["key"]> = new Set(["scholar", "coach", "sage", "hacker"]);
+const PERSONAS_SET: ReadonlySet<Persona["key"]> = new Set(["scholar", "coach", "sage", "hacker", "coach_es"]);
 const PALETTES_SET: ReadonlySet<Palette> = new Set(["warm", "slate"]);
 
 function readPersona(): Persona["key"] {

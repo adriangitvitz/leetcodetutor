@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-PersonaKey = Literal["scholar", "coach", "sage", "hacker"]
+PersonaKey = Literal["scholar", "coach", "sage", "hacker", "coach_es"]
 
 
 @dataclass(frozen=True)
@@ -14,6 +14,7 @@ class Persona:
     opener_teach: str
     opener_soc: str
     opener_chat: str
+    language: str = "English"
 
 
 PERSONAS: dict[PersonaKey, Persona] = {
@@ -48,6 +49,15 @@ PERSONAS: dict[PersonaKey, Persona] = {
         opener_teach="Reading the statement once. Building intuition. Writing the code. That's the order.",
         opener_soc="What's the smallest failing case? Start there.",
         opener_chat="Ask. I'll be brief.",
+    ),
+    "coach_es": Persona(
+        key="coach_es",
+        name="El Coach",
+        desc="Motivador, enérgico, en español",
+        opener_teach="¡Vamos! Buen problema — lo desglosamos juntos. Tú puedes con esto.",
+        opener_soc="Me gusta, estamos calentando. Dime qué ves — la primera intuición cuenta.",
+        opener_chat="¡Lánzame tu pregunta! Cualquiera, no hay malas preguntas.",
+        language="Spanish",
     ),
 }
 
