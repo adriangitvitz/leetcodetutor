@@ -6,6 +6,7 @@ import type { Problem } from "@/lib/types";
 
 type Props = {
   problems: Problem[];
+  initialDifficulty?: Diff;
 };
 
 type Diff = "ALL" | "EASY" | "MEDIUM" | "HARD";
@@ -16,10 +17,12 @@ const DIFF_LABEL: Record<Exclude<Diff, "ALL">, string> = {
   HARD: "Hard",
 };
 
-export function Catalog({ problems }: Props) {
+const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
+
+export function Catalog({ problems, initialDifficulty = "ALL" }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [diff, setDiff] = useState<Diff>("ALL");
+  const [diff, setDiff] = useState<Diff>(initialDifficulty);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -38,13 +41,25 @@ export function Catalog({ problems }: Props) {
     const q = query.trim().toLowerCase();
     return problems
       .map((p, i) => ({ ...p, idx: i + 1 }))
-      .filter((r) => diff === "ALL" || r.difficulty === diff)
       .filter(
         (r) => !q || r.title.toLowerCase().includes(q) || r.topics.toLowerCase().includes(q)
       );
-  }, [problems, query, diff]);
+  }, [problems, query]);
+
+  const slugCandidate = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q || !SLUG_RE.test(q)) return null;
+    if (rows.some((r) => r.slug === q)) return null;
+    return q;
+  }, [query, rows]);
 
   const open = (slug: string) => router.push(`/problems/${slug}`);
+
+  const onDiff = (next: Diff) => {
+    setDiff(next);
+    const url = next === "ALL" ? "/" : `/?difficulty=${next}`;
+    router.push(url);
+  };
 
   return (
     <div className="catalog">
@@ -67,9 +82,15 @@ export function Catalog({ problems }: Props) {
           <span className="search-icon">Find</span>
           <input
             ref={inputRef}
-            placeholder="Search by name or tag…"
+            placeholder="Search by name, tag, or slug…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && slugCandidate) {
+                e.preventDefault();
+                open(slugCandidate);
+              }
+            }}
             autoFocus
           />
         </div>
@@ -79,13 +100,21 @@ export function Catalog({ problems }: Props) {
             <button
               key={d}
               className={`chip ${d === "EASY" ? "easy" : d === "MEDIUM" ? "med" : d === "HARD" ? "hard" : ""} ${diff === d ? "active" : ""}`}
-              onClick={() => setDiff(d)}
+              onClick={() => onDiff(d)}
             >
               {d === "ALL" ? "All" : DIFF_LABEL[d]}
             </button>
           ))}
         </div>
       </div>
+
+      {slugCandidate && (
+        <button className="slug-jump" onClick={() => open(slugCandidate)}>
+          <span className="slug-jump-label">Open by slug</span>
+          <code className="slug-jump-slug">{slugCandidate}</code>
+          <span className="slug-jump-arrow">→</span>
+        </button>
+      )}
 
       <table className="ptable">
         <thead>
@@ -106,7 +135,9 @@ export function Catalog({ problems }: Props) {
           {rows.length === 0 && (
             <tr>
               <td colSpan={6} className="empty-state">
-                - no matches -
+                {slugCandidate
+                  ? <>nothing matches here — try opening <code>{slugCandidate}</code> directly above</>
+                  : "- no matches -"}
               </td>
             </tr>
           )}

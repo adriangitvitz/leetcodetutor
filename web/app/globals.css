@@ -74,14 +74,14 @@
   --hard:  oklch(0.74 0.11 20);
 
   --sans: "Inter Tight", "Inter", system-ui, sans-serif;
-  --serif: "Spectral", "Source Serif Pro", Georgia, serif;
+  --serif: "Literata", "Source Serif 4", "Source Serif Pro", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root[data-theme="warm"],
 :root[data-theme="slate"] {
   --sans: "Inter Tight", "Inter", system-ui, sans-serif;
-  --serif: "Spectral", "Source Serif Pro", Georgia, serif;
+  --serif: "Literata", "Source Serif 4", "Source Serif Pro", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
@@ -244,6 +244,37 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .chip.med.active   { background: oklch(0.30 0.06 75);  border-color: var(--med);  color: var(--med); }
 .chip.hard.active  { background: oklch(0.30 0.06 20);  border-color: var(--hard); color: var(--hard); }
 
+.slug-jump {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border: 1px dashed var(--ink-4);
+  border-left: 3px solid var(--amber);
+  background: transparent;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.slug-jump:hover { border-color: var(--paper-mute); background: var(--ink-2); }
+.slug-jump-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--paper-faint);
+}
+.slug-jump-slug {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--amber);
+  flex: 1;
+}
+.slug-jump-arrow {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--paper-mute);
+}
+
 .ptable {
   width: 100%;
   border-collapse: collapse;
@@ -382,6 +413,61 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .md-meta .meta-label { color: var(--paper-faint); text-transform: uppercase; letter-spacing: 0.15em; font-size: 10px; margin-right: 6px; }
 .md-meta a { font-family: var(--sans); font-size: 12px; }
+
+.md-banner {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--amber-deep);
+  border-left: 3px solid var(--amber);
+  background: oklch(0.22 0.022 75);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--paper-dim);
+}
+.md-banner-label {
+  flex-shrink: 0;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.md-banner-body { color: var(--paper-mute); }
+
+.md-companies {
+  margin: -18px 0 32px;
+  padding: 14px 0 18px;
+  border-bottom: 1px solid var(--ink-4);
+}
+.md-companies-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.md-companies-head .meta-label { color: var(--paper-faint); text-transform: uppercase; letter-spacing: 0.15em; font-size: 10px; }
+.md-companies-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--paper-faint);
+  letter-spacing: 0.04em;
+}
+.md-companies-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.md-company-chip {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-4);
+  color: var(--paper-dim);
+}
+.md-company-more {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--paper-faint);
+  padding: 3px 4px;
+  letter-spacing: 0.04em;
+}
 
 .md-section-label {
   font-family: var(--sans);

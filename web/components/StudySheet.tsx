@@ -5,6 +5,7 @@ import type { Problem, Statement } from "@/lib/types";
 
 type Props = {
   problem: Problem;
+  source?: "db" | "upstream";
 };
 
 const DIFF_LABEL: Record<Problem["difficulty"], string> = {
@@ -18,7 +19,7 @@ type LoadState =
   | { kind: "ready"; statement: Statement }
   | { kind: "error"; message: string };
 
-export function StudySheet({ problem }: Props) {
+export function StudySheet({ problem, source = "db" }: Props) {
   const [state, setState] = useState<LoadState>({ kind: "loading" });
 
   useEffect(() => {
@@ -46,6 +47,15 @@ export function StudySheet({ problem }: Props) {
 
   return (
     <div className="md-doc">
+      {source === "upstream" && (
+        <div className="md-banner">
+          <span className="md-banner-label">Outside the index</span>
+          <span className="md-banner-body">
+            Not present in our database — fetched directly from LeetCode.
+            Company frequencies are unknown.
+          </span>
+        </div>
+      )}
       {state.kind === "ready" && state.statement.number !== null && (
         <div className="md-num">Problem № {state.statement.number}</div>
       )}
@@ -68,6 +78,27 @@ export function StudySheet({ problem }: Props) {
           Source ↗
         </a>
       </div>
+
+      {source === "db" && problem.companies.length > 0 && (
+        <div className="md-companies">
+          <div className="md-companies-head">
+            <span className="meta-label">Asked by</span>
+            <span className="md-companies-count">
+              {problem.company_count} {problem.company_count === 1 ? "company" : "companies"}
+            </span>
+          </div>
+          <div className="md-companies-list">
+            {problem.companies.slice(0, 18).map((c) => (
+              <span key={c} className="md-company-chip">{c}</span>
+            ))}
+            {problem.companies.length > 18 && (
+              <span className="md-company-more">
+                +{problem.companies.length - 18} more
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       {state.kind === "loading" && (
         <p className="md-p" style={{ color: "var(--paper-mute)", fontStyle: "normal" }}>

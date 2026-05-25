@@ -9,8 +9,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..db import get_session
 from ..models import Problem, ProblemCompany
-from ..schemas import ProblemList, ProblemSummary
-from ..services.leetcode import ensure_statement, parse_statement
+from ..schemas import ProblemList, ProblemResolveResponse, ProblemSummary
+from ..services.leetcode import build_markdown, ensure_statement, fetch_question, parse_statement
 
 router = APIRouter(prefix="/problems", tags=["problems"])
 
@@ -127,21 +127,51 @@ async def get_problem(
     return item
 
 
+@router.get("/{slug}/resolve", response_model=ProblemResolveResponse)
+async def resolve_problem(
+    slug: str,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> ProblemResolveResponse:
+    row = await session.get(Problem, slug)
+    if row is not None:
+        [item] = await _attach_companies(session, [row])
+        return ProblemResolveResponse(source="db", problem=item)
+
+    question = await fetch_question(slug)
+    topics = ", ".join(t["name"] for t in (question.get("topicTags") or []))
+    problem = ProblemSummary(
+        slug=question["titleSlug"],
+        title=question["title"],
+        difficulty=question["difficulty"].upper(),
+        topics=topics,
+        company_count=0,
+        mean_frequency=0.0,
+        max_frequency=0.0,
+        acceptance_rate=0.0,
+        link=f"https://leetcode.com/problems/{question['titleSlug']}/",
+        companies=[],
+    )
+    return ProblemResolveResponse(source="upstream", problem=problem)
+
+
 @router.get("/{slug}/statement")
 async def get_statement(
     slug: str,
     session: Annotated[AsyncSession, Depends(get_session)],
     format: Literal["json", "markdown"] = Query("json"),
 ):
-    if await session.get(Problem, slug) is None:
-        raise HTTPException(status_code=404, detail=f"unknown problem slug: {slug}")
-
-    statement = await ensure_statement(session, slug)
+    row = await session.get(Problem, slug)
+    if row is not None:
+        statement = await ensure_statement(session, slug)
+        md = statement.content
+    else:
+        question = await fetch_question(slug)
+        md = build_markdown(question)
 
     if format == "markdown":
-        return PlainTextResponse(content=statement.content, media_type="text/markdown")
+        return PlainTextResponse(content=md, media_type="text/markdown")
 
-    return parse_statement(statement.content)
+    return parse_statement(md)
 
 async def _attach_companies(session: AsyncSession, rows: list[Problem]) -> list[ProblemSummary]:
     """One round-trip to fetch company lists for all returned problems."""

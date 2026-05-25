@@ -8,9 +8,10 @@ import { Tutor } from "./Tutor";
 
 type Props = {
   problem: Problem;
+  source?: "db" | "upstream";
 };
 
-export function StudyView({ problem }: Props) {
+export function StudyView({ problem, source = "db" }: Props) {
   const router = useRouter();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function StudyView({ problem }: Props) {
   return (
     <div className="study">
       <section className="study-pane study-left">
-        <StudySheet problem={problem} />
+        <StudySheet problem={problem} source={source} />
       </section>
       <section className="study-pane study-right">
         <Tutor problem={problem} />

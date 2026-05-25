@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel
 
 
@@ -19,6 +21,11 @@ class ProblemSummary(BaseModel):
 class ProblemList(BaseModel):
     total: int
     items: list[ProblemSummary]
+
+
+class ProblemResolveResponse(BaseModel):
+    source: Literal["db", "upstream"]
+    problem: ProblemSummary
 
 
 class CompanyEntry(BaseModel):

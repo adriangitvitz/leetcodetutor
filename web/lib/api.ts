@@ -69,6 +69,11 @@ export type ListProblemsParams = {
 
 export type ProblemList = { total: number; items: Problem[] };
 
+export type ProblemResolve = {
+  source: "db" | "upstream";
+  problem: Problem;
+};
+
 function qs(params: Record<string, unknown>): string {
   const entries = Object.entries(params).filter(
     ([, v]) => v !== undefined && v !== null && v !== ""
@@ -85,6 +90,9 @@ export const api = {
     call<ProblemList>(`/problems${qs(params)}`),
 
   getProblem: (slug: string) => call<Problem>(`/problems/${encodeURIComponent(slug)}`),
+
+  resolveProblem: (slug: string) =>
+    call<ProblemResolve>(`/problems/${encodeURIComponent(slug)}/resolve`),
 
   getStatement: (slug: string) =>
     call<Statement>(`/problems/${encodeURIComponent(slug)}/statement`),
