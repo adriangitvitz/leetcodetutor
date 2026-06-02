@@ -16,7 +16,7 @@ help:
 
 install:
 	cd leetapi && uv sync
-	cd web && npm install
+	cd web && pnpm install
 
 migrate:
 	cd leetapi && uv run alembic upgrade head
@@ -33,7 +33,7 @@ api-dev:
 	cd leetapi && uv run leetapi serve
 
 web-dev:
-	cd web && npm run dev
+	cd web && pnpm run dev
 
 dev:
 	$(MAKE) -j2 api-dev web-dev
