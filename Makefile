@@ -19,6 +19,7 @@ install:
 	cd web && pnpm install
 
 migrate:
+    mkdir -p data
 	cd leetapi && uv run alembic upgrade head
 
 ingest: migrate
